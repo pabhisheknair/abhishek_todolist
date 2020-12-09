@@ -1,23 +1,23 @@
 var user = document.getElementById("user");
 var pass = document.getElementById("pass");
 
-function valid()
+$("#butt").click(function()
 {
     if(user.value=="admin" && pass.value=="12345")
     {
-        return true;
+        document.getElementById('set').setAttribute("action","home.html");
     }
     else
     {
         alert("incorrect username or password");
-        return false;
     }
-}
+});
 
 
 
    
   $(document).ready(function(){
+    
       $.getJSON("https://jsonplaceholder.typicode.com/todos",function(data)
       {
       var output="";
@@ -44,10 +44,27 @@ function valid()
 
   function done()
   {
+    var prom = new Promise(function(resolve, reject)
+    {
     var check=$('input:checkbox:checked').length;
     var values=check-90;
-    if (values==5)
+    if (values>=5)
     {
-        alert("Congrats.you have succesfully completed  5  tasks");
+      resolve("Congrats.you have succesfully completed "+values+ " tasks");
     }
-  }
+    else
+    {
+      reject("not enough tasks completed");
+    }
+  })
+    prom.then(function(e)
+    {
+    setTimeout (function()
+    { alert(e);
+    },500);  
+    }) 
+    .catch(function(e)
+    {
+      console.log(e);
+    })  
+}
